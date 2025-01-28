@@ -40,6 +40,14 @@ contract FundMe {
         if(msg.sender != i_owner) { revert NotOwner();}
         _;
     }
-
     
+    // This function will trigger when someone send funds to the contract without using fund function (as a transfer)
+    receive() external payable {
+        fund(); 
+    }
+
+    // This function will trigger when someone calls a function that doesn`t exist in our contract
+    fallback() external payable {
+        fund(); 
+    }
 }
