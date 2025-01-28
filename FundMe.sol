@@ -9,8 +9,12 @@ contract FundMe {
 
     uint256 public minimunUsd = 5e18;
     address[] public funders;
+    address public owner;
     mapping(address funder => uint256 amountFunded) public addressToAmountFunded;
 
+    constructor() {
+        owner = msg.sender;
+    }
 
     function fund() public payable {
         require(msg.value.getConversionRate() >= minimunUsd, "Didn't send enough ETH");
@@ -19,6 +23,7 @@ contract FundMe {
     }
 
     function withdraw() public {
+        require(msg.sender == owner, "Must be owner");
         // reset mapping
         for(uint256 i = 0; i < funders.length; i++) {
             address funder = funders[i];
